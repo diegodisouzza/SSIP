@@ -104,7 +104,7 @@ public class SSIP extends ActiveRouter {
 
 	public void setCrs() {
 		try {
-			fr = new FileReader(commFile);
+			fr = new FileReader(crsFile);
 			br = new BufferedReader(fr);
 			
 			String line = br.readLine();
@@ -134,7 +134,7 @@ public class SSIP extends ActiveRouter {
 
 	public void setSsim() {
 		try {
-			fr = new FileReader(commFile);
+			fr = new FileReader(ssimFile);
 			br = new BufferedReader(fr);
 			
 			String line = br.readLine();

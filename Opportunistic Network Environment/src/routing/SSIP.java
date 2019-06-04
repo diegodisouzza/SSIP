@@ -181,7 +181,7 @@ public class SSIP extends ActiveRouter {
 		}
 	}
 
-	public Tuple<Message, Connection> tryOtherMessages() {
+	public Tuple<Message, Connection> trySendMessages() {
 		List<Tuple<Message, Connection>> messages = 
 				new ArrayList<Tuple<Message, Connection>>(); 
 		
@@ -257,5 +257,7 @@ public class SSIP extends ActiveRouter {
 			ssimRead = true;
 			setSsim();
 		}
+		
+		trySendMessages();
 	}
 }

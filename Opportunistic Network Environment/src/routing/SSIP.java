@@ -31,9 +31,9 @@ public class SSIP extends ActiveRouter {
 	private String ssimFile;
 	private String crsFile;
 	private String commFile;
-	private Boolean ssimRead;
-	private Boolean crsRead;
-	private Boolean commRead;
+	private Boolean ssimRead = false;
+	private Boolean crsRead = false;
+	private Boolean commRead = false;
 	
 	FileReader fr;
 	BufferedReader br;
@@ -87,6 +87,7 @@ public class SSIP extends ActiveRouter {
 				if(node == this.getHost().getAddress()) {
 					communityId = comm;
 				}
+				line = br.readLine();
 			}
 			br.close();
 			
@@ -117,6 +118,7 @@ public class SSIP extends ActiveRouter {
 						crs.put(i, Double.parseDouble(infos[i]));
 					}
 				}
+				line = br.readLine();
 			}
 			br.close();
 			
@@ -152,6 +154,7 @@ public class SSIP extends ActiveRouter {
 						ssim.put(node_j, ssim_value);
 					}
 				}
+				line = br.readLine();
 			}
 			br.close();
 			
@@ -244,17 +247,21 @@ public class SSIP extends ActiveRouter {
 		super.update();
 		if(!commRead) {
 			commRead = true;
+			System.out.println("comm");
 			setCommunityId();
 		}
 		if(!crsRead) {
 			crsRead = true;
+			System.out.println("crs");
 			setCrs();
 		}
 		if(ecrs==null) {
 			setEcrs();
+			System.out.println("ecrs");
 		}
 		if(!ssimRead) {
 			ssimRead = true;
+			System.out.println("ssim");
 			setSsim();
 		}
 		

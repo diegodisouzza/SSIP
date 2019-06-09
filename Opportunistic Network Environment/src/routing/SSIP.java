@@ -247,24 +247,66 @@ public class SSIP extends ActiveRouter {
 		super.update();
 		if(!commRead) {
 			commRead = true;
-			System.out.println("comm");
 			setCommunityId();
 		}
 		if(!crsRead) {
 			crsRead = true;
-			System.out.println("crs");
 			setCrs();
 		}
 		if(ecrs==null) {
 			setEcrs();
-			System.out.println("ecrs");
 		}
 		if(!ssimRead) {
 			ssimRead = true;
-			System.out.println("ssim");
 			setSsim();
 		}
 		
 		trySendMessages();
+	}
+	
+	@Override
+	public RoutingInfo getRoutingInfo() {
+		RoutingInfo ri = new RoutingInfo(this);
+		RoutingInfo incoming = new RoutingInfo(this.incomingMessages.size() + 
+				" incoming message(s)");
+		RoutingInfo delivered = new RoutingInfo(this.deliveredMessages.size() +
+				" delivered message(s)");
+		
+		RoutingInfo cons = new RoutingInfo(this.getConnections().size() + 
+			" connection(s)");
+		
+		RoutingInfo ricrs = new RoutingInfo(this.crs.size() + "crs values");
+		
+		RoutingInfo rissim = new RoutingInfo(this.ssim.size() + "ssim values");
+				
+		ri.addMoreInfo(incoming);
+		ri.addMoreInfo(delivered);
+		ri.addMoreInfo(cons);
+		ri.addMoreInfo(ricrs);
+		ri.addMoreInfo(rissim);
+		
+		for (Message m : this.incomingMessages.values()) {
+			incoming.addMoreInfo(new RoutingInfo(m));
+		}
+		
+		for (Message m : this.deliveredMessages.values()) {
+			delivered.addMoreInfo(new RoutingInfo(m + " path:" + m.getHops()));
+		}
+		
+		for (Connection c : this.getConnections()) {
+			cons.addMoreInfo(new RoutingInfo(c));
+		}
+		
+		for (Integer comm : this.crs.keySet()) {
+			ricrs.addMoreInfo(new RoutingInfo("crs between communities "+this.communityId+
+					" and "+comm+" = "+this.crs.get(comm)));
+		}
+		
+		for (Integer host : this.ssim.keySet()) {
+			rissim.addMoreInfo(new RoutingInfo("ssim between nodes "+this.getHost().getAddress()+
+					" "+host+" = "+this.ssim.get(host)));
+		}
+
+		return ri;
 	}
 }

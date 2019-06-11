@@ -13,6 +13,7 @@ import core.DTNHost;
 import core.Message;
 import core.Settings;
 import core.SimClock;
+import core.SimError;
 import core.Tuple;
 
 public class SSIP extends ActiveRouter {
@@ -150,9 +151,7 @@ public class SSIP extends ActiveRouter {
 				Double ssim_value = Double.parseDouble(infos[4]);
 				
 				if(node_i == this.getHost().getAddress()) {
-					if(node_i == this.getHost().getAddress()) {
-						ssim.put(node_j, ssim_value);
-					}
+					ssim.put(node_j, ssim_value);
 				}
 				line = br.readLine();
 			}
@@ -236,6 +235,16 @@ public class SSIP extends ActiveRouter {
 		
 		return tryMessagesForConnected(messages);
 	}
+	
+	public void sendMessage(String id, DTNHost to) {
+		Message m = getMessage(id);
+		Message m2;
+		if (m == null) throw new SimError("no message for id " +
+				id + " to send at " + this.getHost());
+ 
+		m2 = m.replicate();	// send a replicate of the message
+		to.receiveMessage(m2, this.getHost());
+	}
 
 	@Override
 	public MessageRouter replicate() {
@@ -275,9 +284,9 @@ public class SSIP extends ActiveRouter {
 		RoutingInfo cons = new RoutingInfo(this.getConnections().size() + 
 			" connection(s)");
 		
-		RoutingInfo ricrs = new RoutingInfo(this.crs.size() + "crs values");
+		RoutingInfo ricrs = new RoutingInfo(this.crs.size() + " crs values");
 		
-		RoutingInfo rissim = new RoutingInfo(this.ssim.size() + "ssim values");
+		RoutingInfo rissim = new RoutingInfo(this.ssim.size() + " ssim values");
 				
 		ri.addMoreInfo(incoming);
 		ri.addMoreInfo(delivered);

@@ -599,5 +599,15 @@ public abstract class ActiveRouter extends MessageRouter {
 	 * @param con The connection whose transfer was finalized
 	 */
 	protected void transferDone(Connection con) { }
+
+	public void connectionUp(Connection con) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void connectionDown(Connection con) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

@@ -229,23 +229,12 @@ public class SSIP extends ActiveRouter {
 			}
 		}
 		
-		if (messages.size() == 0) {
+		if (messages.size() != 0)
+			return tryMessagesForConnected(messages);
+		else
 			return null;
-		}
-		
-		return tryMessagesForConnected(messages);
 	}
 	
-	public void sendMessage(String id, DTNHost to) {
-		Message m = getMessage(id);
-		Message m2;
-		if (m == null) throw new SimError("no message for id " +
-				id + " to send at " + this.getHost());
- 
-		m2 = m.replicate();	// send a replicate of the message
-		to.receiveMessage(m2, this.getHost());
-	}
-
 	@Override
 	public MessageRouter replicate() {
 		return new SSIP(this);
